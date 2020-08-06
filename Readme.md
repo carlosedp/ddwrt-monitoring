@@ -6,17 +6,22 @@ This stack is used to monitor a Netgear R7000P (Nighthawk) router that uses a Br
 
 ## Preparing the Router
 
-1) First enable JFFS in Router GUI to persist files and create the dir `/jffs/snmpd/`
-2) Copy all `.sh` scripts from `router` directory into router's `/jffs/snmpd/`
-3) Add execute permission with `chmod +x /jffs/snmpd/*.sh`
-4) Copy config file `router/snmpd.conf` into `/var/snmp/snmpd.conf`
-5) Disable SNMP on the service page of the GUI
+1) Set an user, password in (Administration -> Management -> Router Password) and enable SSH in (Services -> Secure Shell) to be able to copy files into the router.
+2) Then [enable JFFS](https://wiki.dd-wrt.com/wiki/index.php/JFFS_File_System) in Router GUI to persist files and create the dir `/jffs/snmpd/`
+3) Copy all files from `router` directory into router's `/jffs/snmpd/`
+    > `scp root@192.168.1.1 router/* /jffs/snmpd`
+4) Add execute permission with `chmod +x /jffs/snmpd/*.sh`
+   > `ssh root@192.168.1.1 chmod +x /jffs/snmpd/*.sh`
+5) Disable SNMP on the Service page of the GUI if already enabled (custom config is used)
 6) Add `snmpd -c /jffs/snmpd/snmpd.conf` in the startup commands in the GUI (Administration -> Commands -> Save as Startup)
 7) Reboot
 
-## Setup the Monitoring Stack
+## Run the Monitoring Stack
 
-1) Run `docker-compose up -d`
+The monitoring stack is composed of snmp_exporter, Prometheus, Grafana and Alertmanager. They are run in Docker containers by using a docker-compose file.
+
+1) Configure your router IP in the `prometheus/prometheus.yml` file `job_name -> targets` section.
+2) Run `docker-compose up -d`
 
 Grafana, Prometheus and Alertmanager will be configured with provisioned Data Source pointing to <http://prometheus:9090> and with the dashboards pre-loaded.
 
