@@ -1,0 +1,54 @@
+version: "3"
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
+services:
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/:/prometheus-config
+      - prometheus_data:/prometheus
+    ports:
+      - 9090:9090
+    expose:
+      - 9090
+    restart: always
+    command:
+      - "--config.file=/prometheus-config/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+
+  snmp-exporter:
+    image: prom/snmp-exporter
+    volumes:
+      - ./snmp-exporter/:/etc/snmp_exporter
+    ports:
+      - 9116:9116
+    expose:
+      - 9116
+    restart: always
+    command: "--config.file=/etc/snmp_exporter/snmp.yml"
+
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+    restart: always
+    command:
+      - "--config.file=/etc/alertmanager/config.yml"
+      - "--storage.path=/alertmanager"
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/:/etc/grafana/provisioning/
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    user: "472:472"
+    restart: always
