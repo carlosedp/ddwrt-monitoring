@@ -52,3 +52,16 @@ services:
       - 3000
     user: "472:472"
     restart: always
+
+  vmware-exporter:
+    image: pryorda/vmware_exporter
+    ports:
+      - 9272:9272
+    expose:
+      - 9272
+    environment:
+      - VSPHERE_HOST=${VSPHERE_HOST}
+      - VSPHERE_IGNORE_SSL=True
+      - VSPHERE_USER=${VCENTER_USER}
+      - VSPHERE_PASSWORD=${VCENTER_PASSWORD}
+    restart: always
