@@ -14,7 +14,8 @@
   "editable": true,
   "gnetId": 11898,
   "graphTooltip": 1,
-  "iteration": 1597259450843,
+  "id": 2,
+  "iteration": 1612276739237,
   "links": [],
   "panels": [{
       "collapsed": false,
@@ -81,9 +82,9 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "targets": [{
-        "expr": "ssCpuSystem{instance=~\"$node\"} + ssCpuUser{instance=~\"$node\"}",
+        "expr": "ssCpuSystem{hostname=~\"$node\"} + ssCpuUser{hostname=~\"$node\"}",
         "interval": "",
         "legendFormat": " ",
         "refId": "A"
@@ -125,14 +126,14 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^Linux router 4\\.4.226 \\#309 SMP Thu Jun 4 08:42:52 \\+04 2020 armv7l$/",
+          "fields": "/^Linux/",
           "values": false
         },
         "textMode": "name"
       },
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "targets": [{
-        "expr": "sysDescription",
+        "expr": "sysDescription{hostname=~\"$node\", job=\"snmp\"}  ",
         "instant": true,
         "interval": "",
         "legendFormat": "{{sysDescription}}",
@@ -194,9 +195,9 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "targets": [{
-        "expr": "1 - (memTotalFree{instance=~\"$node\"} / memTotalReal{instance=~\"$node\"})",
+        "expr": "1 - (memTotalFree{hostname=~\"$node\"} / memTotalReal{hostname=~\"$node\"})",
         "interval": "",
         "legendFormat": " ",
         "refId": "A"
@@ -249,9 +250,9 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "targets": [{
-        "expr": "sum(wlInterfaceClientCount)",
+        "expr": "sum(wlInterfaceClientCount{hostname=~\"$node\"})",
         "instant": true,
         "interval": "",
         "legendFormat": "",
@@ -302,9 +303,9 @@
         },
         "showUnfilled": true
       },
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "targets": [{
-        "expr": "wlInterfaceClientCount * on (wlInterfaceName) group_left(wlInterfaceSSID) wlInterfaceSSID",
+        "expr": "wlInterfaceClientCount{hostname=\"$node\"} * on (wlInterfaceName) group_left(wlInterfaceSSID) wlInterfaceSSID{hostname=\"$node\"}",
         "hide": false,
         "instant": true,
         "interval": "",
@@ -361,14 +362,14 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^{instance=\"192.168.1.1\", job=\"snmp\"}$/",
+          "fields": "",
           "values": false
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "targets": [{
-        "expr": "systemUpTime{instance=~\"$node\"}/100",
+        "expr": "systemUpTime{hostname=~\"$node\", job=\"snmp\"}/100",
         "interval": "",
         "legendFormat": "",
         "refId": "A"
@@ -412,8 +413,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -438,37 +442,37 @@
       "stack": false,
       "steppedLine": false,
       "targets": [{
-          "expr": "rate(ifOutOctets{ifDescr=~\"eth1\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifOutOctets{ifDescr=~\"eth1\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Outgoing (2.4 GHz / eth1)",
           "refId": "A"
         },
         {
-          "expr": "rate(ifInOctets{ifDescr=~\"eth1\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifInOctets{ifDescr=~\"eth1\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Incoming (2.4 GHz / eth1)",
           "refId": "B"
         },
         {
-          "expr": "rate(ifOutOctets{ifDescr=~\"eth2\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifOutOctets{ifDescr=~\"eth2\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Outgoing (5 GHz / eth2)",
           "refId": "C"
         },
         {
-          "expr": "rate(ifInOctets{ifDescr=~\"eth2\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifInOctets{ifDescr=~\"eth2\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Incoming (5 GHz / eth2)",
           "refId": "D"
         },
         {
-          "expr": "rate(ifInOctets{ifDescr=~\"wl0.1\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifInOctets{ifDescr=~\"wl0.1\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Incoming (Guest 2.4 GHz / wl0.1)",
           "refId": "E"
         },
         {
-          "expr": "rate(ifOutOctets{ifDescr=~\"wl0.1\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifOutOctets{ifDescr=~\"wl0.1\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Outgoing (Guest 2.4 GHz / wl0.1)",
           "refId": "F"
@@ -562,9 +566,9 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "targets": [{
-        "expr": "sum by(status)(rate(ifInOctets{ifDescr=\"vlan2\", instance=~\"$node\", job=\"snmp\"}[1m])) * 8",
+        "expr": "sum by(status)(rate(ifInOctets{ifDescr=\"vlan2\", hostname=~\"$node\", job=\"snmp\"}[1m])) * 8",
         "instant": true,
         "interval": "",
         "intervalFactor": 1,
@@ -624,9 +628,9 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "targets": [{
-        "expr": "sum by(status)(irate(ifOutOctets{ifDescr=\"vlan2\", instance=~\"$node\", job=\"snmp\"}[1m])) * 8",
+        "expr": "sum by(status)(irate(ifOutOctets{ifDescr=\"vlan2\", hostname=~\"$node\", job=\"snmp\"}[1m])) * 8",
         "instant": true,
         "interval": "",
         "legendFormat": " ",
@@ -671,8 +675,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -684,13 +691,13 @@
       "stack": false,
       "steppedLine": false,
       "targets": [{
-          "expr": "rate(ifOutOctets{ifDescr=~\"eth0\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifOutOctets{ifDescr=~\"eth0\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Outgoing",
           "refId": "A"
         },
         {
-          "expr": "rate(ifInOctets{ifDescr=~\"eth0\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifInOctets{ifDescr=~\"eth0\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Incoming",
           "refId": "B"
@@ -787,9 +794,9 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "targets": [{
-        "expr": "connectionsTCP+connectionsUDP+connectionsICMP",
+        "expr": "connectionsTCP{hostname=\"$node\"}+connectionsUDP{hostname=\"$node\"}+connectionsICMP{hostname=\"$node\"}",
         "instant": true,
         "interval": "",
         "legendFormat": "",
@@ -847,8 +854,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -857,20 +867,20 @@
       "stack": true,
       "steppedLine": false,
       "targets": [{
-          "expr": "connectionsTCP",
+          "expr": "connectionsTCP{hostname=\"$node\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "TCP",
           "refId": "A"
         },
         {
-          "expr": "connectionsUDP",
+          "expr": "connectionsUDP{hostname=\"$node\"}",
           "interval": "",
           "legendFormat": "UDP",
           "refId": "B"
         },
         {
-          "expr": "connectionsICMP",
+          "expr": "connectionsICMP{hostname=\"$node\"}",
           "interval": "",
           "legendFormat": "ICMP",
           "refId": "C"
@@ -895,7 +905,6 @@
         "values": []
       },
       "yaxes": [{
-          "$$hashKey": "object:108",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -904,7 +913,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:109",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -952,8 +960,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -965,13 +976,13 @@
       "stack": false,
       "steppedLine": false,
       "targets": [{
-          "expr": "rate(ifOutOctets{ifDescr=\"vlan1\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifOutOctets{ifDescr=\"vlan1\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Outgoing",
           "refId": "A"
         },
         {
-          "expr": "rate(ifInOctets{ifDescr=\"vlan1\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifInOctets{ifDescr=\"vlan1\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Incoming",
           "refId": "B"
@@ -1052,8 +1063,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1065,13 +1079,13 @@
       "stack": false,
       "steppedLine": false,
       "targets": [{
-          "expr": "sum by(status)(irate(ifOutOctets{ifDescr=\"vlan2\", instance=~\"$node\", job=\"snmp\"}[5m])) * 8",
+          "expr": "sum by(status)(irate(ifOutOctets{ifDescr=\"vlan2\", hostname=~\"$node\", job=\"snmp\"}[5m])) * 8",
           "interval": "",
           "legendFormat": "Outgoing",
           "refId": "A"
         },
         {
-          "expr": "sum by(status)(irate(ifInOctets{ifDescr=\"vlan2\", instance=~\"$node\", job=\"snmp\"}[5m])) * 8",
+          "expr": "sum by(status)(irate(ifInOctets{ifDescr=\"vlan2\", hostname=~\"$node\", job=\"snmp\"}[5m])) * 8",
           "interval": "",
           "legendFormat": "Incoming",
           "refId": "B"
@@ -1151,8 +1165,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1164,13 +1181,13 @@
       "stack": false,
       "steppedLine": false,
       "targets": [{
-          "expr": "rate(ifOutOctets{ifDescr=~\"tun1\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifOutOctets{ifDescr=~\"tun1\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Outgoing",
           "refId": "A"
         },
         {
-          "expr": "rate(ifInOctets{ifDescr=~\"tun1\", instance=~\"$node\", job=\"snmp\"}[5m]) * 8",
+          "expr": "rate(ifInOctets{ifDescr=~\"tun1\", hostname=~\"$node\", job=\"snmp\"}[5m]) * 8",
           "interval": "",
           "legendFormat": "Incoming",
           "refId": "B"
@@ -1273,9 +1290,9 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "targets": [{
-        "expr": "ssCpuNumCpus",
+        "expr": "ssCpuNumCpus{hostname=\"$node\"}",
         "instant": true,
         "interval": "",
         "legendFormat": "",
@@ -1324,8 +1341,11 @@
       "links": [],
       "maxDataPoints": 100,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1334,19 +1354,19 @@
       "stack": false,
       "steppedLine": false,
       "targets": [{
-          "expr": "laLoadInt{laNames=\"Load-1\", instance=~\"$node\"}/100",
+          "expr": "laLoadInt{laNames=\"Load-1\", hostname=~\"$node\"}/100",
           "interval": "",
           "legendFormat": "{{laNames}}",
           "refId": "C"
         },
         {
-          "expr": "laLoadInt{laNames=\"Load-5\", instance=~\"$node\"}/100",
+          "expr": "laLoadInt{laNames=\"Load-5\", hostname=~\"$node\"}/100",
           "interval": "",
           "legendFormat": "{{laNames}}",
           "refId": "B"
         },
         {
-          "expr": "laLoadInt{laNames=\"Load-15\", instance=~\"$node\"}/100",
+          "expr": "laLoadInt{laNames=\"Load-15\", hostname=~\"$node\"}/100",
           "interval": "",
           "legendFormat": "{{laNames}}",
           "refId": "A"
@@ -1371,7 +1391,6 @@
         "values": []
       },
       "yaxes": [{
-          "$$hashKey": "object:181",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1380,7 +1399,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:182",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1438,9 +1456,9 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "targets": [{
-        "expr": "cpuTemperature/10",
+        "expr": "cpuTemperature{hostname=\"$node\"}/10",
         "instant": true,
         "interval": "",
         "legendFormat": "",
@@ -1486,8 +1504,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1496,7 +1517,7 @@
       "stack": false,
       "steppedLine": false,
       "targets": [{
-        "expr": "cpuTemperature/10",
+        "expr": "cpuTemperature{hostname=\"$node\"}/10",
         "interval": "",
         "legendFormat": "°C",
         "refId": "A"
@@ -1575,8 +1596,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": true,
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1597,17 +1621,20 @@
       "stack": true,
       "steppedLine": false,
       "targets": [{
-          "expr": "ssCpuSystem{instance=~\"$node\"}",
+          "expr": "ssCpuSystem{hostname=~\"$node\"}",
+          "interval": "",
           "legendFormat": "System",
           "refId": "A"
         },
         {
-          "expr": "ssCpuUser{instance=~\"$node\"}",
+          "expr": "ssCpuUser{hostname=~\"$node\"}",
+          "interval": "",
           "legendFormat": "User",
           "refId": "B"
         },
         {
-          "expr": "ssCpuIdle{instance=~\"$node\"}",
+          "expr": "ssCpuIdle{hostname=~\"$node\"}",
+          "interval": "",
           "legendFormat": "Idle",
           "refId": "C"
         }
@@ -1687,8 +1714,11 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
-      "pluginVersion": "7.1.3",
+      "pluginVersion": "7.3.7",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1709,17 +1739,20 @@
       "stack": true,
       "steppedLine": false,
       "targets": [{
-          "expr": "memTotalReal{instance=~\"$node\"}-memTotalFree{instance=~\"$node\"}",
+          "expr": "memTotalReal{hostname=~\"$node\"}-memTotalFree{hostname=~\"$node\"}",
+          "interval": "",
           "legendFormat": "Used",
           "refId": "B"
         },
         {
-          "expr": "memTotalFree{instance=~\"$node\"}",
+          "expr": "memTotalFree{hostname=~\"$node\"}",
+          "interval": "",
           "legendFormat": "Free",
           "refId": "A"
         },
         {
-          "expr": "memTotalSwap{instance=~\"$node\"}",
+          "expr": "memTotalSwap{hostname=~\"$node\"}",
+          "interval": "",
           "legendFormat": "Swap",
           "refId": "C"
         }
@@ -1774,19 +1807,20 @@
       "allValue": null,
       "current": {
         "selected": false,
-        "text": "192.168.1.1",
-        "value": "192.168.1.1"
+        "text": "logan.home",
+        "value": "logan.home"
       },
       "datasource": "Prometheus",
-      "definition": "label_values(snmp_scrape_duration_seconds{job=~\"snmp\"}, instance)",
+      "definition": "label_values(snmp_scrape_duration_seconds{job=~\"snmp\"}, hostname)",
+      "error": null,
       "hide": 0,
       "includeAll": false,
       "label": "Host:",
       "multi": false,
       "name": "node",
       "options": [],
-      "query": "label_values(snmp_scrape_duration_seconds{job=~\"snmp\"}, instance)",
-      "refresh": 1,
+      "query": "label_values(snmp_scrape_duration_seconds{job=~\"snmp\"}, hostname)",
+      "refresh": 2,
       "regex": "",
       "skipUrlSync": false,
       "sort": 1,
@@ -1818,5 +1852,5 @@
   "timezone": "",
   "title": "DD-WRT Router Monitor",
   "uid": "ih0LwWuZk",
-  "version": 9
+  "version": 14
 }

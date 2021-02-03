@@ -38,6 +38,8 @@ scrape_configs:
     static_configs:
       - targets:
         - 192.168.1.1 # Router
+        labels:
+          hostname: My.Router
     metrics_path: /snmp
     params:
       module: [ddwrt]
@@ -46,5 +48,9 @@ scrape_configs:
         target_label: __param_target
       - source_labels: [__param_target]
         target_label: instance
+      - source_labels: [mib]           # Allow per-target MIB override
+        target_label: __param_module   # via 'mib' label
+      - target_label: mib
+        replacement: ''                # Remove the `mib` label
       - target_label: __address__
         replacement: 'snmp-exporter:9116'  # SNMP exporter.
